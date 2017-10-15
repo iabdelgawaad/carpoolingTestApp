@@ -9,4 +9,5 @@ import com.example.ibrahimabdelgawad.carpoolingtestapp.core.BasePresenter;
 public abstract class CarPresenter extends BasePresenter
 {
     public abstract void populate();
+    public abstract void retry();
 }

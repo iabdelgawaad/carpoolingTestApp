@@ -7,5 +7,5 @@ package com.example.ibrahimabdelgawad.carpoolingtestapp.core;
 public interface BaseView
 {
     void showLoading();
-    void showError();
+    void showError(String error);
 }

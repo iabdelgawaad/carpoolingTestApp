@@ -23,7 +23,7 @@ public class ExampleUnitTest {
     public void setUp(){
         MockitoAnnotations.initMocks(this);
     }
-    
+
     @Mock
     Context mMockContext;
 

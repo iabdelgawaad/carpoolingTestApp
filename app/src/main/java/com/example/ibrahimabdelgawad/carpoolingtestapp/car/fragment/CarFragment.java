@@ -2,10 +2,12 @@ package com.example.ibrahimabdelgawad.carpoolingtestapp.car.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -143,8 +145,8 @@ public class CarFragment extends BaseFragment<CarPresenter> implements CarView, 
     }
 
     @Override
-    public void showError() {
-
+    public void showError(String error) {
+        showRetryDialog(error);
     }
 
     @Override
@@ -178,5 +180,22 @@ public class CarFragment extends BaseFragment<CarPresenter> implements CarView, 
         if (pd != null) {
             pd.hide();
         }
+    }
+
+    public void showRetryDialog(String msg) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+        builder1.setMessage(msg);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                R.string.retry_text,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        getPresenter().retry();
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

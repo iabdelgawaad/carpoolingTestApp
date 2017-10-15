@@ -31,6 +31,11 @@ public class CarPresenterImp extends CarPresenter {
         getCarList();
     }
 
+    @Override
+    public void retry() {
+        getCarList();
+    }
+
     public void getCarList() {
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
@@ -47,7 +52,7 @@ public class CarPresenterImp extends CarPresenter {
                     cartView.showCarList(placemark.getPlacemarks());
                 } else {
                     Log.d("error message", response.message());
-                    cartView.showError();
+                    cartView.showError(response.message());
                 }
             }
 
@@ -55,7 +60,7 @@ public class CarPresenterImp extends CarPresenter {
             public void onFailure(Call<Placemark> call, Throwable t) {
                 cartView.hideLoading();
                 if (t instanceof UnknownHostException) {
-                    cartView.showInlineError(BaseApplication.get().getString(R.string.no_connection_msg));
+                    cartView.showError(BaseApplication.get().getString(R.string.no_connection_msg));
                 }
                 else
                     Log.d("error message", t.getMessage());

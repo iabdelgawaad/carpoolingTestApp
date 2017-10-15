@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CarpoolingTestApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading_text">loading</string>
+    <string name="no_connection_msg">No connection error!</string>
+    <string name="title_activity_maps">Map</string>
+
+</resources>

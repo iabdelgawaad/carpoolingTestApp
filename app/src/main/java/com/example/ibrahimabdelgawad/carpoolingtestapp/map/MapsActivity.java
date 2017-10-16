@@ -2,14 +2,13 @@ package com.example.ibrahimabdelgawad.carpoolingtestapp.map;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 
 import com.example.ibrahimabdelgawad.carpoolingtestapp.R;
 import com.example.ibrahimabdelgawad.carpoolingtestapp.car.fragment.CarFragment;
 import com.example.ibrahimabdelgawad.carpoolingtestapp.car.model.CarModel;
-import com.example.ibrahimabdelgawad.carpoolingtestapp.car.model.Placemark;
 import com.example.ibrahimabdelgawad.carpoolingtestapp.util.PrefUtils;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,7 +24,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -73,25 +71,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng latLng = null;
         for (int i = 0; i < carModelArrayList.size(); i++) {
-            latLng = new LatLng(Double.parseDouble(carModelArrayList.get(i).getCoordinates().get(0) + ""),
-                    Double.parseDouble(carModelArrayList.get(i).getCoordinates().get(1) + ""));
+            latLng = new LatLng(Double.parseDouble(carModelArrayList.get(i).getCoordinates().get(1) + ""),
+                    Double.parseDouble(carModelArrayList.get(i).getCoordinates().get(0) + ""));
 
             Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(carModelArrayList.get(i).getName()));
             myMarkers.add(marker);
             builder.include(marker.getPosition());
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            mMap.setMyLocationEnabled(true);
         }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
 
         //zoom to show all the markers
         animateCamera(builder);

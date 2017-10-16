@@ -117,11 +117,6 @@ public class CarFragment extends BaseFragment<CarPresenter> implements CarView, 
         adapter = new CarAdapter(getActivity(), carAdapterList, this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        //save to shared
-        Gson gson = new Gson();
-        String json = gson.toJson(this.carAdapterList);
-        PrefUtils.saveToPrefs(getActivity() , CAR_LIST_KEY , json);
     }
 
     @Override

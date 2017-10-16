@@ -16,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -31,7 +30,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private List<CarModel> carModelArrayList;
     private ArrayList<Marker> myMarkers;
-    private LatLngBounds.Builder builder;
 
 
     @Override
@@ -45,7 +43,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         carModelArrayList = new ArrayList<>();
         myMarkers = new ArrayList<Marker>();
-        builder = new LatLngBounds.Builder();
 
         //get carList from shared
         Gson gson = new Gson();
@@ -76,7 +73,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(carModelArrayList.get(i).getName()));
             myMarkers.add(marker);
-            builder.include(marker.getPosition());
+            //zoom to show all the markers
+            zoom();
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -90,9 +88,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
+    }
 
-        //zoom to show all the markers
-        animateCamera(builder);
+    public void zoom() {
+        CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(carModelArrayList.get(0).getCoordinates().get(1),
+                carModelArrayList.get(0).getCoordinates().get(0)), 10);
+
+        if (mMap != null)
+            mMap.moveCamera(zoom);
 
         if (mMap != null) {
             //To show and Hide pins
@@ -110,16 +113,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
         }
-    }
-
-    public void animateCamera(LatLngBounds.Builder builder) {
-        LatLngBounds bounds = builder.build();
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int padding = (int) (width * 0.10); // offset from edges of the map 10% of screen
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-
-        if (mMap != null)
-            mMap.animateCamera(cu);
     }
 }
